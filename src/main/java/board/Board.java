@@ -1,0 +1,56 @@
+package main.java.board;
+
+import main.java.Constants;
+import main.java.piece.Piece;
+
+import java.io.Serializable;
+
+public class Board implements Serializable {
+
+    private static final long serialVersionUID = 824461096453998426L;
+    private Location[][] loc;
+    private int turn;
+
+    public Board() {
+        loc = new Location[Constants.BOARD_SIZE][Constants.BOARD_SIZE];
+        for (int r = 0; r < Constants.BOARD_SIZE; r++) {
+            for (int c = 0; c < Constants.BOARD_SIZE; c++) {
+                loc[r][c] = new Location(r, c);
+            }
+        }
+    }
+
+    public void init() {
+
+    }
+
+    public Piece getPiece(int row, int column) {
+        return loc[row][column].getPiece();
+    }
+
+    public void placePiece(Piece p, int row, int column) {
+        loc[row][column].setPiece(p);
+    }
+
+    public Piece removePiece(int row, int column) {
+        Piece ret = loc[row][column].getPiece();
+        loc[row][column].setPiece(null);
+        return ret;
+    }
+
+    public Location getLoc(int row, int column) {
+        return loc[row][column];
+    }
+
+    public void setLoc(Location l, int row, int column) {
+        loc[row][column] = l;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int i) {
+        turn = i;
+    }
+}

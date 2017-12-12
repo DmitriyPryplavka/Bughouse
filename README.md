@@ -1,1 +1,2 @@
 Bughouse
+ chess
