@@ -24,6 +24,8 @@ public class GUI extends TimerTask {
     private JButton[][] hold2 = new JButton[Constants.BOARD_SIZE][4];
     private JButton[][] hold3 = new JButton[Constants.BOARD_SIZE][4];
     private JButton[][] hold4 = new JButton[Constants.BOARD_SIZE][4];
+    private JButton returnButton = new JButton("To menu");
+    private JButton saveButton = new JButton("Save game");
     public static PicBGbig backpanel = new PicBGbig();
     /**
      * Create the application.
@@ -168,6 +170,35 @@ public class GUI extends TimerTask {
         lblBughouseChess.setFont(new Font("Algerian", Font.BOLD, 60));
         lblBughouseChess.setBounds(178, 75, 742, 93);
         frame.getContentPane().add(lblBughouseChess);
+
+        returnButton.setHorizontalAlignment(SwingConstants.LEFT);
+        returnButton.setBounds(0,740,100,20);
+        //frame.getContentPane().add(returnButton);
+
+        saveButton.setHorizontalAlignment(SwingConstants.RIGHT);
+        saveButton.setBounds(990,740,100,20);
+        frame.getContentPane().add(saveButton);
+
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        try {
+                            MenuMain winMenu = new MenuMain();
+                            winMenu.Draw();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                frame.setVisible(false);
+            }
+        });
+
+
+
         frame.setVisible(true);
 
         for (int i = 0; i < Constants.BOARD_SIZE; i++) {
@@ -193,6 +224,7 @@ public class GUI extends TimerTask {
                     pieces2[i][j].setBackground(Color.white);
             }
         }
+
 
     }
 

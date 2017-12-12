@@ -1,16 +1,18 @@
 package main.java.board;
 
 import main.java.Constants;
+import main.java.communicator.*;
 import main.java.piece.*;
 
 import java.io.Serializable;
-
+import java.util.concurrent.TimeUnit;
 
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 7725665560866651386L;
     private Board[] boards;
     private Holding[] holdings;
+    private Communicator comm;
     private boolean ready = false;
 
     public Game() {
@@ -23,8 +25,31 @@ public class Game implements Serializable {
         for (int i = 0; i < Constants.NUM_PLAYERS; i++)
             holdings[i] = new Holding();
 
-        }
+        if (comm instanceof Client) {
+            System.out.println("Client?");
+            initClient();
+        } else
+            System.out.println("I'm a server!");
+    }
 
+    public Game(Communicator comm) {
+        boards = new Board[Constants.NUM_TEAMS];
+        holdings = new Holding[Constants.NUM_PLAYERS];
+
+        for (int i = 0; i < Constants.NUM_TEAMS; i++)
+            boards[i] = new Board();
+        for (int i = 0; i < Constants.NUM_PLAYERS; i++)
+            holdings[i] = new Holding();
+        this.comm = comm;
+    }
+
+    public void start() {
+        if (comm instanceof Client) {
+            System.out.println("I'm a client!");
+            initClient();
+        } else
+            System.out.println("I'm a server!");
+    }
 
     public void init() {
         for (Board b : boards) {
@@ -108,9 +133,45 @@ public class Game implements Serializable {
         ready = true;
     }
 
+    public void setCommunicator(Communicator comm) {
+        this.comm = comm;
+    }
 
+    public Communicator getCommunicator() {
+        return comm;
+    }
 
+    public void resetConnections() {
+        ((Server) comm).reset();
+        comm.sendObject(this);
+    }
 
+    private void initClient() {
+        Object o;
+        new Thread(new RunClient((Client) comm, this)).start();
+    }
+
+    public void initServer() {
+        while (!ready) { // wait until server answer
+            try {
+                TimeUnit.NANOSECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (comm instanceof Server) {
+            ((Server) comm).setGame(this);
+            comm.sendObject("testing");
+            ((Server) comm).cleanUp();
+        }
+
+        int players = ((Server) comm).getNumClients() + 1;
+
+        comm.sendObject(this);
+
+        for (int i = 0; i < players; i++)
+            new Thread(new RunServer((Server) comm, i, this)).start();
+    }
 
 }
-
