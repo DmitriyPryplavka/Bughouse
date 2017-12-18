@@ -121,6 +121,9 @@
     <!-- Perform any build initialization in this target -->
   </target>
   
+  <target name="test" description="test">
+  </target>
+  
   <target name="clean" depends="clean.module.bughouse" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.bughouse" description="build all modules"/>
