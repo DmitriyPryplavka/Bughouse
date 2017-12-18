@@ -77,9 +77,9 @@ public class Game implements Serializable {
         boards[0].placePiece(new Bishop(1), 0, 5);
 
         boards[0].placePiece(new Queen(0), 7, 3);
-        boards[0].placePiece(new King(1), 0, 3);
+        boards[0].placePiece(new Queen(1), 0, 3);
         boards[0].placePiece(new King(0), 7, 4);
-        boards[0].placePiece(new Queen(1), 0, 4);
+        boards[0].placePiece(new King(1), 0, 4);
         for (int i = 0; i < Constants.BOARD_SIZE; i++) {
             boards[1].placePiece(new Pawn(1), 6, i);
             boards[1].placePiece(new Pawn(0), 1, i);
@@ -100,9 +100,9 @@ public class Game implements Serializable {
         boards[1].placePiece(new Bishop(0), 0, 5);
 
         boards[1].placePiece(new Queen(1), 7, 4);
-        boards[1].placePiece(new King(0), 0, 4);
+        boards[1].placePiece(new Queen(0), 0, 4);
         boards[1].placePiece(new King(1), 7, 3);
-        boards[1].placePiece(new Queen(0), 0, 3);
+        boards[1].placePiece(new King(0), 0, 3);
         for (Holding h : holdings)
             h.init();
     }
