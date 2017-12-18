@@ -6,17 +6,17 @@ import org.junit.Test;
 
 public class RookTest {
     @Test
-    public void isMovedTest(){          //Пряме тестування коду
+    public void isMovedTest(){          //ГЏГ°ГїГ¬ГҐ ГІГҐГ±ГІГіГўГ Г­Г­Гї ГЄГ®Г¤Гі
         Rook rook = new Rook(0);
-        //Перевірка початкового значення
+        //ГЏГҐГ°ГҐГўВіГ°ГЄГ  ГЇГ®Г·Г ГІГЄГ®ГўГ®ГЈГ® Г§Г­Г Г·ГҐГ­Г­Гї
         boolean isMoved = Rook.getMoved();
         Assert.assertFalse(isMoved);
-        //Зміна значення та перевірка
+        //Г‡Г¬ВіГ­Г  Г§Г­Г Г·ГҐГ­Г­Гї ГІГ  ГЇГҐГ°ГҐГўВіГ°ГЄГ 
         Rook.setMoved(true);
         isMoved = rook.getMoved();
         Assert.assertTrue(isMoved);
-        //Зміна значення в початкове положення
-        Queen.setMoved(false);
+        //Г‡Г¬ВіГ­Г  Г§Г­Г Г·ГҐГ­Г­Гї Гў ГЇГ®Г·Г ГІГЄГ®ГўГҐ ГЇГ®Г«Г®Г¦ГҐГ­Г­Гї
+        Rook.setMoved(false);
         Assert.assertFalse(Rook.getMoved());
 
     }
