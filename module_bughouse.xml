@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_bughouse" default="compile.module.bughouse">
+  <dirname property="module.bughouse.basedir" file="${ant.file.module_bughouse}"/>
+  
+  <property name="module.jdk.home.bughouse" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.bughouse" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.bughouse" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.bughouse" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="bughouse.output.dir" value="${module.bughouse.basedir}/out/production/Bughouse"/>
+  <property name="bughouse.testoutput.dir" value="${module.bughouse.basedir}/out/test/Bughouse"/>
+  
+  <path id="bughouse.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="bughouse.module.production.classpath">
+    <path refid="${module.jdk.classpath.bughouse}"/>
+    <path refid="library.junit:junit-dep:4.10.classpath"/>
+    <path refid="library.org.mockito:mockito-core:1.9.5.classpath"/>
+  </path>
+  
+  <path id="bughouse.runtime.production.module.classpath">
+    <pathelement location="${bughouse.output.dir}"/>
+    <path refid="library.junit:junit-dep:4.10.classpath"/>
+    <path refid="library.org.mockito:mockito-core:1.9.5.classpath"/>
+  </path>
+  
+  <path id="bughouse.module.classpath">
+    <path refid="${module.jdk.classpath.bughouse}"/>
+    <pathelement location="${bughouse.output.dir}"/>
+    <path refid="library.junit:junit-dep:4.10.classpath"/>
+    <path refid="library.org.mockito:mockito-core:1.9.5.classpath"/>
+  </path>
+  
+  <path id="bughouse.runtime.module.classpath">
+    <pathelement location="${bughouse.testoutput.dir}"/>
+    <pathelement location="${bughouse.output.dir}"/>
+    <path refid="library.junit:junit-dep:4.10.classpath"/>
+    <path refid="library.org.mockito:mockito-core:1.9.5.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.bughouse">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.bughouse">
+    <patternset refid="excluded.from.module.bughouse"/>
+  </patternset>
+  
+  <path id="bughouse.module.sourcepath">
+    <dirset dir="${module.bughouse.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.bughouse" depends="compile.module.bughouse.production,compile.module.bughouse.tests" description="Compile module Bughouse"/>
+  
+  <target name="compile.module.bughouse.production" depends="register.custom.compilers" description="Compile module Bughouse; production classes">
+    <mkdir dir="${bughouse.output.dir}"/>
+    <javac2 destdir="${bughouse.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.bughouse}/javac">
+      <compilerarg line="${compiler.args.bughouse}"/>
+      <bootclasspath refid="bughouse.module.bootclasspath"/>
+      <classpath refid="bughouse.module.production.classpath"/>
+      <src refid="bughouse.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.bughouse"/>
+    </javac2>
+    
+    <copy todir="${bughouse.output.dir}">
+      <fileset dir="${module.bughouse.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.bughouse.tests" depends="register.custom.compilers,compile.module.bughouse.production" description="compile module Bughouse; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.bughouse" description="cleanup module">
+    <delete dir="${bughouse.output.dir}"/>
+    <delete dir="${bughouse.testoutput.dir}"/>
+  </target>
+</project>
